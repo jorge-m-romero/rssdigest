@@ -1,8 +1,7 @@
 # rssdigest
 
 Fetch RSS feeds, summarise each item in two sentences, and email a digest.
-A port of an n8n flow (RSS Read → summarise → aggregate → send email) into a
-single script you trigger by hand when you want the digest.
+A single script you trigger by hand when you want the digest.
 
 ## How the summarising is billed
 
@@ -19,8 +18,8 @@ The summary is the only step that uses a model. There are two commands:
 
 The script **sends** over SMTP and the mail lands in your inbox — nothing
 "connects Claude to your mailbox." Send from **Gmail** (Gmail still supports
-16-char App Passwords; the same one from your n8n flow works here) and set
-`MAIL_TO` to whatever address you want the digest delivered to.
+16-char App Passwords) and set `MAIL_TO` to whatever address you want the
+digest delivered to.
 
 ## Install
 
@@ -51,7 +50,7 @@ python3 rssdigest.py run-local --state ~/.cache/rssdigest/seen.txt
 # Save a preview to a file (open it in a browser) instead of emailing:
 python3 rssdigest.py run-local --out preview.html
 
-# All items in the feed (like n8n, which has no cap):
+# All items in the feed (no cap):
 python3 rssdigest.py run-local --max-items 0
 
 # A different / extra feed and an explicit recipient:
@@ -76,7 +75,7 @@ python3 rssdigest.py run-local --feed https://feeds.feedburner.com/TheHackersNew
 | Flag | Commands | Meaning |
 |------|----------|---------|
 | `--feed URL` | `fetch`, `run-local`, `run` | Feed to read. Repeatable for several feeds. Overrides `RSS_FEEDS` / the default. |
-| `--max-items N` | `fetch`, `run-local`, `run` | Cap on items. Default **10**. **`0` = no limit** (every item in the feed, like n8n). |
+| `--max-items N` | `fetch`, `run-local`, `run` | Cap on items. Default **10**. **`0` = no limit** (every item in the feed). |
 | `--to ADDR` | `send`, `run-local`, `run` | Recipient. Repeatable. Overrides `MAIL_TO`. |
 | `--model ID` | `run-local`, `run` | `run-local`: model the local `claude` uses (default: its own). `run`: API model id (default `claude-opus-5-5`). |
 | `--out FILE` | `send`, `run-local`, `run` | Write the rendered HTML to `FILE` instead of emailing (a preview; does not send, does not record state). |
@@ -130,9 +129,9 @@ are mocked), using the standard library `unittest`:
 python3 -m unittest discover -s tests
 ```
 
-## Item count vs n8n
+## How many items
 
-The n8n flow summarised **every** item in the feed; `rssdigest` defaults to the
-newest **10** (`--max-items 10`). To match n8n, pass `--max-items 0` (or set
-`RSS_MAX_ITEMS=0`). With `--state` enabled you only ever summarise items you
-haven't already been sent, regardless of the cap.
+`rssdigest` defaults to the newest **10** (`--max-items 10`). For every item in
+the feed, pass `--max-items 0` (or set `RSS_MAX_ITEMS=0`). With `--state`
+enabled you only ever summarise items you haven't already been sent, regardless
+of the cap.

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """rssdigest - fetch RSS feeds, summarise each item, email a digest.
 
-A port of an n8n flow (RSS Read -> summarise -> aggregate -> send email). Two
-ways to run it:
+Pipeline: fetch feed items -> summarise each -> render -> email. Two ways to
+run it:
 
   run    one shot: fetch -> summarise via the Anthropic API -> email.
          Uses ANTHROPIC_API_KEY, so it spends API credits.
@@ -261,7 +261,7 @@ def summarise_local(items, model=None):
 
 def render_html(items):
     """Build the digest email body. Every field is HTML-escaped because it comes
-    from an untrusted feed; the layout mirrors the original n8n template."""
+    from an untrusted feed; the layout is a simple inline-styled digest."""
     blocks = []
     for it in items:
         title = html.escape(it.get("title", "(untitled)"))
