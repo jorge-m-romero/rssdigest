@@ -121,6 +121,15 @@ Point `--state` (or `RSS_STATE` in `.env`) at a file. Item ids are recorded
 python3 rssdigest.py run-local --state ~/.cache/rssdigest/seen.txt
 ```
 
+## Tests
+
+Pure-logic tests (no network, API, or SMTP — the `claude` CLI and feed parsing
+are mocked), using the standard library `unittest`:
+
+```bash
+python3 -m unittest discover -s tests
+```
+
 ## Item count vs n8n
 
 The n8n flow summarised **every** item in the feed; `rssdigest` defaults to the
